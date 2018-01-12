@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+ 
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	  <title>Merchant Portal</title>
+	  <meta charset="utf-8" />
+	  <meta name="viewport" content="width=device-width, initial-scale=1" />
+	  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>	  
+	  <script type="text/javascript" src="angularApp.js"></script>
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	  <link rel="stylesheet" href="footer.css" />  
+</head>
+ 
+<body>
+<div ng-app="app" ng-controller="indexController">
+  <nav class="navbar navbar-inverse"> <!-- style="background-color: #0d5b0f; -->
+    <div class="container-fluid">
+	    <a class="navbar-brand" style="color:#DDDDDD;" href="index.html">ABC Financial Services</a>
+	    <ul class="nav navbar-nav navbar-left" style="color:#DDDDDD">
+	    	<li ng-click="showTransactions()"> <a href="#">Transactions</a></li>
+	    	<li ng-click="showCases()"> <a href="#">Cases</a></li>
+	    </ul>
+	    <ul class="nav navbar-nav navbar-right">
+		   <li>	<a href="#" style="color:#DDDDDD;" th:href="@{/logout}">Log Out</a></li>
+		</ul>
+    </div>
+  </nav>
+  <div class="container"> 
+	<div>
+		<h4> Welcome </h4>
+		Enter merchant id: <input type="text" ng-model="merchantId"/><br/>
+		<br/>
+ 		<input type="button" class="btn btn-primary" ng-click="showTransactions()" value="Get Transactions" />
+		<input type="button" class="btn btn-primary" ng-click="showCases()" value="Get Cases" />
+ 		<p/>
+		<div ng-show="IsVisible">
+		<div class="panel panel-info">
+  			<div class="panel-heading">
+				<h4 class="panel-title">Transactions List</h4>
+			</div>
+  			<div class="panel-body">
+		    <div id="listTransactions" class="row col-md-7 table-responsive">
+		    	<table class="table table-bordered table-hover">
+		    		<tr>
+		   				<th>TxnId</th>
+		   				<th>Amount</th>
+		   				<th>Transaction Date</th>
+		   				<th>Payment Date</th>
+		   				<th>Status</th>
+		 			</tr>
+		  			<tr ng-repeat="txn in listTransactions | orderBy : 'id'">
+		    			<td>{{txn.id}}</td>
+		    			<td>{{txn.amount | currency : $:2}}</td>
+		    			<td>{{txn.date}}</td>
+		    			<td>{{txn.paymentdate}}</td>
+		    			<td>{{txn.status}}</td>
+		  			</tr>
+				</table>
+		    </div>
+		    </div>
+		    </div>
+		</div>
+		<p/>
+		<div ng-show="IsCasesVisible">
+		<div class="panel panel-info">
+  			<div class="panel-heading">
+				<h4 class="panel-title">Cases List</h4>
+			</div>
+			<div class="panel-body">		
+		    <div id="listCases" class="row col-md-7 table-responsive">
+		    	<table class="table table-bordered table-hover">
+		    		<tr>
+		   				<th>Case Id</th>
+		   				<th>Created</th>
+		   				<th>Status</th>
+		   				<th>Description</th>
+		   				<th></th>
+		 			</tr>
+		  			<tr ng-repeat="case in listCases | orderBy : 'id'">
+		    			<td>{{case.id}}</td>
+		    			<td>{{case.created}}</td>
+		    			<td contenteditable="false">{{case.status}}</td>
+		    			<td contenteditable="false">{{case.description}}</td>
+		    			<td><span ng-click="editCase()" class="glyphicon glyphicon-edit"></span></td>
+		  			</tr>
+				</table>
+				<button class="btn btn-primary" ng-click="addCase()" value="Add Case">Add Case</button>
+				<div ng-show="showAddCases">
+					<br/>
+					<form>
+						<table>							
+							<tr><td>Description:</td><td><textarea rows="3" cols="21" ng-model="casedesc"></textarea></td></tr>
+							<tr><td>Status:</td><td><select ng-model="casestatus">
+								<option value="Open">Open</option>
+								<option value="Closed">Closed</option>
+							</select></td></tr>
+							<tr><td><input type="submit" class="btn btn-primary" value="Submit" ng-click="submitCase()"></input></td></tr>
+							<tr><td>{{createdstatus}}</td></tr>
+						</table>
+					</form>
+				</div>
+		    </div>
+		    </div>
+		    </div>
+		</div>
+	</div>
+	</div>
+	<footer class="footer">
+      	<div class="container">
+        <p class="text-muted">Copyright Syntel Pvt. Ltd.</p>
+      </div>
+    </footer>
+</div>	
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</body>
+</html>
